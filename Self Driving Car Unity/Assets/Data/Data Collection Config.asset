@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Name: Data Collection Config
   m_EditorClassIdentifier: Assembly-CSharp::DataCollectionConfig
   isDataCollection: 0
-  Lidar: 0
+  Lidar: 1
   lidarFolder: C:\Users\User\Desktop\SelfDrivingCar\Lidar
   lidarCSV: C:\Users\User\Desktop\SelfDrivingCar\lidar.csv
-  Road: 1
-  roadFolder: C:\Users\User\Desktop\SelfDrivingCar\Road
-  roadCSV: C:\Users\User\Desktop\SelfDrivingCar\road.csv
+  Camera: 1
+  cameraFolder: C:\Users\User\Desktop\SelfDrivingCar\Camera
+  cameraCSV: C:\Users\User\Desktop\SelfDrivingCar\camera.csv

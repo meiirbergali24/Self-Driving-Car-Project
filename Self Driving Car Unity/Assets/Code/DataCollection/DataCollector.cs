@@ -53,15 +53,15 @@ public class DataCollector : MonoBehaviour
     private Vector3[,] lidarRaycasts;
 
     [SerializeField, Space]
-    private int roadCollectionFrameRate = 5;
+    private int cameraCollectionFrameRate = 5;
     [SerializeField, Space]
     private int lidarCollectionFrameRate = 5;
 
-    private Coroutine collectingRoadData;
+    private Coroutine collectingCameraData;
     private Coroutine collectingLidarData;
 
 
-    private Texture2D road;
+    private Texture2D camera;
     private bool innerLane = true;
     private TCPConnection myTCP;                                                // Object responsible for TCP connection   
     private string action = "";
@@ -76,10 +76,10 @@ public class DataCollector : MonoBehaviour
             LidarPanel.SetActive(true);
             collectingLidarData = StartCoroutine(CollectingLidarData());
         }
-        if (config.Road)
+        if (config.Camera)
         {
             CameraPanel.SetActive(true);
-            collectingRoadData = StartCoroutine(CollectingRoadData());
+            collectingCameraData = StartCoroutine(CollectingCameraData());
         }
 
         if(!config.isDataCollection)
@@ -93,7 +93,7 @@ public class DataCollector : MonoBehaviour
 
     public void End()
     {
-        if(collectingRoadData   !=null) StopCoroutine(collectingRoadData);
+        if(collectingCameraData   !=null) StopCoroutine(collectingCameraData);
         if(collectingLidarData  !=null) StopCoroutine(collectingLidarData);
     }
 
@@ -172,30 +172,30 @@ public class DataCollector : MonoBehaviour
         goto Loop;
     }
 
-    private IEnumerator CollectingRoadData()
+    private IEnumerator CollectingCameraData()
     {
-        if (road == null)
+        if (camera == null)
         {
-            road = new Texture2D(cameraInput.width, cameraInput.height, TextureFormat.RGB24, false);
+            camera = new Texture2D(cameraInput.width, cameraInput.height, TextureFormat.RGB24, false);
         }
         RenderTexture bufferTexture;
         Rect viewport = new Rect(0f,0f,cameraInput.width, cameraInput.height);
         string filename;
         
         Loop:
-        if (Time.frameCount % roadCollectionFrameRate == 0)
+        if (Time.frameCount % cameraCollectionFrameRate == 0)
         {
             bufferTexture = RenderTexture.active;
             RenderTexture.active = cameraInput;
-            road.ReadPixels(viewport,0,0);
+            camera.ReadPixels(viewport,0,0);
             RenderTexture.active = bufferTexture;
 
-            road.Apply();
-            CameraRawImage.texture = road;
+            camera.Apply();
+            CameraRawImage.texture = camera;
 
             if (!config.isDataCollection)
             {
-                myTCP.writeSocket(Combine(road.GetRawTextureData(), delimeter, lidarOutput.GetRawTextureData()));
+                myTCP.writeSocket(Combine(camera.GetRawTextureData(), delimeter, lidarOutput.GetRawTextureData()));
 
                 action = "";
                 while (action == "")
@@ -216,8 +216,8 @@ public class DataCollector : MonoBehaviour
             if (config.isDataCollection)
             {
                 filename = DateTime.Now.ToFileTime().ToString();
-                File.WriteAllBytes($"{config.roadFolder}/{filename}_road.jpg", road.EncodeToJPG());
-                File.AppendAllText(config.roadCSV, $"{filename}_road {carData.angle} {carData.lane}\n");
+                File.WriteAllBytes($"{config.cameraFolder}/{filename}_camera.jpg", camera.EncodeToJPG());
+                File.AppendAllText(config.cameraCSV, $"{filename}_camera {(carData.angle.ToString()).Replace(',', '.')} {carData.lane}\n");
             }
         }
         yield return new WaitForEndOfFrame();

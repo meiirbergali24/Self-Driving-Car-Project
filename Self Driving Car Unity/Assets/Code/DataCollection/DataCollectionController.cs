@@ -26,13 +26,13 @@ public class DataCollectionController : MonoBehaviour {
     private InputField
         lidarFolderField,
         lidarCSVField,
-        roadFolderField,
-        roadCSVField;
+        cameraFolderField,
+        cameraCSVField;
 
     [SerializeField, Space]
     private Toggle lidarToggle;
     [SerializeField]
-    private Toggle roadToggle;
+    private Toggle cameraToggle;
     
     [SerializeField, Space]
     private DataCollectionConfig config;
@@ -53,11 +53,11 @@ public class DataCollectionController : MonoBehaviour {
 
         SetLidarFolder($"{defaultPath}/Lidar");
         SetLidarCSV($"{defaultPath}/lidar.csv");
-        SetRoadFolder($"{defaultPath}/Road");
-        SetRoadCSV($"{defaultPath}/road.csv");
+        SetCameraFolder($"{defaultPath}/Camera");
+        SetCameraCSV($"{defaultPath}/camera.csv");
 
         IsListenLidar = true;
-        IsListenRoad = true;
+        IsListenCamera = true;
 
         UpdateText();
     }
@@ -76,11 +76,11 @@ public class DataCollectionController : MonoBehaviour {
         lidarFolderField.text = config.lidarFolder;
         lidarCSVField.text = config.lidarCSV;
 
-        roadFolderField.text = config.roadFolder;
-        roadCSVField.text = config.roadCSV;
+        cameraFolderField.text = config.cameraFolder;
+        cameraCSVField.text = config.cameraCSV;
 
         lidarToggle.isOn = config.Lidar;
-        roadToggle.isOn = config.Road;
+        cameraToggle.isOn = config.Camera;
     }
 
     public void SetLidarFolder(string folder)
@@ -93,14 +93,14 @@ public class DataCollectionController : MonoBehaviour {
         config.lidarCSV = file;
     }
 
-    public void SetRoadFolder(string folder)
+    public void SetCameraFolder(string folder)
     {
-        config.roadFolder = folder;
+        config.cameraFolder = folder;
     }
 
-    public void SetRoadCSV(string file)
+    public void SetCameraCSV(string file)
     {
-        config.roadCSV = file;
+        config.cameraCSV = file;
     }
 
     public void CheckFolders()
@@ -111,9 +111,9 @@ public class DataCollectionController : MonoBehaviour {
         {
             exist = Directory.Exists(config.lidarFolder);
         }
-        if (config.Road)
+        if (config.Camera)
         {
-            exist = exist && Directory.Exists(config.roadFolder);
+            exist = exist && Directory.Exists(config.cameraFolder);
         }
 
         if (exist)
@@ -138,15 +138,15 @@ public class DataCollectionController : MonoBehaviour {
             config.Lidar = value;
         }
     }
-    public bool IsListenRoad
+    public bool IsListenCamera
     {
         get
         {
-            return config.Road;
+            return config.Camera;
         }
         set
         {
-            config.Road = value;
+            config.Camera = value;
         }
     }
 
@@ -167,7 +167,7 @@ public class DataCollectionController : MonoBehaviour {
     public void StartTesting()
     {
         config.Lidar = true;
-        config.Road = true;
+        config.Camera = true;
         OnDataCollectionStart.Invoke();
     }
 }
@@ -181,7 +181,7 @@ public class DataCollectionConfig : ScriptableObject
     public string lidarFolder;
     public string lidarCSV;
 
-    public bool Road;
-    public string roadFolder;
-    public string roadCSV;
+    public bool Camera;
+    public string cameraFolder;
+    public string cameraCSV;
 }
