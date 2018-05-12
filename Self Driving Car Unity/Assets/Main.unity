@@ -10801,7 +10801,7 @@ MonoBehaviour:
   - {x: -50.82994, y: 0, z: 17.468245}
   - {x: -33.848694, y: 0, z: 16.25157}
   - {x: -50.84365, y: 0, z: 16.665506}
-  walkerSpawnTime: 1
+  walkerSpawnTime: 3
   walkersCount: 25
   staticCarsCount: 15
   road: {fileID: 391984973}
