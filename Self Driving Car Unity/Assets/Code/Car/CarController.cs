@@ -4,7 +4,7 @@ using UnityEngine;
 
 public sealed class CarController : MonoBehaviour {
 
-    const float speed = 450f;
+    const float speed = 250f;
 
     [SerializeField]
     private DataCollectionConfig config;
